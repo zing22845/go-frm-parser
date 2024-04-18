@@ -1,2 +1,3 @@
 # go-frm-parser
-Parse MySQL frm file
+
+Parsing MySQL '.frm' file from stream inspired by frmdump of dbsake

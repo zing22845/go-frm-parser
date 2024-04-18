@@ -1,0 +1,35 @@
+--
+-- Table structure for table `all_types_sample`
+-- Created with MySQL Version 5.7.38
+--
+
+CREATE TABLE `all_types_sample` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sample_int` int(11) DEFAULT '-1',
+  `sample_bigint` bigint(20) DEFAULT '-100',
+  `sample_decimal` decimal(10,2) DEFAULT '-99.99',
+  `sample_numeric` decimal(10,2) DEFAULT '-88.88',
+  `sample_float` float DEFAULT '-10.1',
+  `sample_double` double DEFAULT '-20.2',
+  `sample_bit` bit(11) DEFAULT b'10001101011',
+  `sample_char` char(10) DEFAULT 'default',
+  `sample_varchar` varchar(100) DEFAULT 'hello world',
+  `sample_binary` binary(10) DEFAULT 'binary\0\0\0\0',
+  `sample_varbinary` varbinary(10) DEFAULT 'varbin',
+  `sample_tinyblob` tinyblob,
+  `sample_blob` blob,
+  `sample_mediumblob` mediumblob,
+  `sample_longblob` longblob,
+  `sample_tinytext` tinytext,
+  `sample_text` text,
+  `sample_mediumtext` mediumtext,
+  `sample_longtext` longtext,
+  `sample_date` date DEFAULT '2020-01-01',
+  `sample_time` time DEFAULT '-12:34:55',
+  `sample_datetime` datetime DEFAULT '2020-01-01 12:34:56',
+  `sample_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sample_year` year(4) DEFAULT '2020',
+  `sample_enum` enum('value1','value2','value3') DEFAULT 'value1',
+  `sample_set` set('option1','option2','option3') DEFAULT 'option1,option2',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
