@@ -24,17 +24,6 @@ func (v *MySQLView) ParseName(path string) {
 }
 
 func (v *MySQLView) String() string {
-	header := strings.Join([]string{
-		"--",
-		fmt.Sprintf("-- View: %s", v.Name),
-		fmt.Sprintf("-- Timestamp: %s", v.Timestamp.Format("2006-01-02 15:04:05")),
-		fmt.Sprintf("-- Stored MD5: %s", v.StoredMD5),
-		fmt.Sprintf("-- Computed MD5: %s", v.ComputedMD5),
-		"--",
-		"",
-		"",
-	}, "\n")
-
 	parts := make([]string, 0, 10)
 	parts = append(parts, "CREATE")
 
@@ -56,5 +45,20 @@ func (v *MySQLView) String() string {
 		parts = append(parts, "WITH "+v.CheckOption.String()+" CHECK OPTION")
 	}
 
-	return header + strings.Join(parts, " ") + ";"
+	return strings.Join(parts, " ") + ";\n"
+}
+
+func (v *MySQLView) StringWithHeader() string {
+	header := strings.Join([]string{
+		"--",
+		fmt.Sprintf("-- View: %s", v.Name),
+		fmt.Sprintf("-- Timestamp: %s", v.Timestamp.Format("2006-01-02 15:04:05")),
+		fmt.Sprintf("-- Stored MD5: %s", v.StoredMD5),
+		fmt.Sprintf("-- Computed MD5: %s", v.ComputedMD5),
+		"--",
+		"",
+		"",
+	}, "\n")
+
+	return header + v.String()
 }

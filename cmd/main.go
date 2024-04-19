@@ -22,5 +22,6 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Printf("%s\n", result)
+	fmt.Printf("====WITHOUT HEADER:\n%s", result.String())
+	fmt.Printf("\n====WITH HEADER:\n%s", result.StringWithHeader())
 }

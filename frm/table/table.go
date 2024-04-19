@@ -72,15 +72,23 @@ func (mt *MySQLTable) String() string {
 		columnKeys += ",\n" + mt.Keys.Combined
 	}
 	parts := []string{
-		"--",
-		fmt.Sprintf("-- Table structure for table `%s`", mt.Name),
-		fmt.Sprintf("-- Created with MySQL Version %s", mt.MySQLVersion.String()),
-		"--",
 		"",
 		fmt.Sprintf("CREATE TABLE `%s` (", mt.Name),
 		columnKeys,
 		fmt.Sprintf(") %s;", mt.Options.String()),
 		"",
+	}
+	return strings.Join(parts, "\n")
+}
+
+func (mt *MySQLTable) StringWithHeader() string {
+	parts := []string{
+		"",
+		"--",
+		fmt.Sprintf("-- Table structure for table `%s`", mt.Name),
+		fmt.Sprintf("-- Created with MySQL Version %s", mt.MySQLVersion.String()),
+		"--",
+		mt.String(),
 	}
 	return strings.Join(parts, "\n")
 }

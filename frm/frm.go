@@ -11,6 +11,7 @@ import (
 
 type MySQLSchema interface {
 	String() string
+	StringWithHeader() string
 }
 
 func Parse(path string, r io.Reader) (MySQLSchema, error) {
