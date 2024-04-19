@@ -14,6 +14,17 @@ type MySQLSchema interface {
 	StringWithHeader() string
 }
 
+func ParseBuffer(path string, buf *bytes.Buffer) (MySQLSchema, error) {
+	header := buf.Bytes()[:9]
+	if bytes.Equal(header[:2], []byte{0xfe, 0x01}) {
+		return table.Parse(path, buf)
+	} else if string(header) == "TYPE=VIEW" {
+		return view.Parse(path, buf)
+	} else {
+		return nil, fmt.Errorf("invalid input format")
+	}
+}
+
 func Parse(path string, r io.Reader) (MySQLSchema, error) {
 	// Create a bytes.Buffer to store the entire input
 	var buf bytes.Buffer

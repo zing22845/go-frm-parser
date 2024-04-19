@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 
 	"github.com/zing22845/go-frm-parser/frm"
@@ -16,8 +18,15 @@ func main() {
 	}
 	defer file.Close()
 
+	buf := bytes.NewBuffer(nil)
+	_, err = io.Copy(buf, file)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
 	// read and parse frm file
-	result, err := frm.Parse(path, file)
+	result, err := frm.ParseBuffer(path, buf)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
