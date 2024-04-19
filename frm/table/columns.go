@@ -20,7 +20,7 @@ type Columns struct {
 	Combined   string
 }
 
-func (cs *Columns) Decode(table *MySQLTable) {
+func (cs *Columns) Decode(table *MySQLTable) error {
 	cs.Names.Decode()
 	cs.Labels.Decode()
 
@@ -47,8 +47,12 @@ func (cs *Columns) Decode(table *MySQLTable) {
 			Defaults:       table.Defaults,
 		}
 		cs.Items[fieldnr] = column
-		column.Decode()
+		err := column.Decode()
+		if err != nil {
+			return err
+		}
 		combined[fieldnr] = "  " + column.String()
 	}
 	cs.Combined = strings.Join(combined, ",\n")
+	return nil
 }

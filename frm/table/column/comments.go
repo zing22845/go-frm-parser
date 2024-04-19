@@ -1,6 +1,8 @@
 package column
 
 import (
+	"fmt"
+
 	"github.com/zing22845/go-frm-parser/frm/model"
 	"github.com/zing22845/go-frm-parser/frm/utils"
 )
@@ -25,6 +27,12 @@ func NewCommentsData(data []byte, offset, length uint32) (c *Comments) {
 func (c *Comments) Decode(length uint32, charsetName string) (comment string, err error) {
 	if c.Length == 0 {
 		return
+	}
+	if c.Length < c.CurrentOffset+length {
+		return "",
+			fmt.Errorf(
+				"comments length(%d) is not enough(%d+%d)",
+				c.Length, c.CurrentOffset, c.Length)
 	}
 	data := c.Data[c.CurrentOffset : c.CurrentOffset+length]
 	c.CurrentOffset += length

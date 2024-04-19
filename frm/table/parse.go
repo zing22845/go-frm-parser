@@ -19,6 +19,9 @@ func Parse(path string, buf *bytes.Buffer) (*MySQLTable, error) {
 		return nil, err
 	}
 
-	fi.MySQLTable.Decode(data)
+	err = fi.MySQLTable.Decode(data)
+	if err != nil {
+		return nil, err
+	}
 	return fi.MySQLTable, nil
 }

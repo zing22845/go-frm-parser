@@ -85,11 +85,15 @@ func (mt *MySQLTable) String() string {
 	return strings.Join(parts, "\n")
 }
 
-func (mt *MySQLTable) Decode(data []byte) {
+func (mt *MySQLTable) Decode(data []byte) error {
 	mt.DecodeOptions()
-	mt.Columns.Decode(mt)
+	err := mt.Columns.Decode(mt)
+	if err != nil {
+		return err
+	}
 	mt.Keys.Decode(mt.Columns)
 	mt.DecodeTableComment(data)
+	return nil
 }
 
 func (mt *MySQLTable) DecodeOptions() {

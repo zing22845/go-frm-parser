@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	// 打开 FRM 文件
 	path := os.Args[1]
 	file, err := os.Open(path)
 	if err != nil {
@@ -17,7 +16,7 @@ func main() {
 	}
 	defer file.Close()
 
-	// 调用 readAndParse 函数解析文件内容
+	// read and parse frm file
 	result, err := frm.Parse(path, file)
 	if err != nil {
 		fmt.Println("Error:", err)

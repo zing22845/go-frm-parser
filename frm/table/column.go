@@ -71,7 +71,6 @@ func (c *Column) Decode() (err error) {
 	c.Defaults.CurrentOffset = uint32(utils.Uint24LE(c.Metadata.Data[c.Metadata.CurrentOffset+5:c.Metadata.CurrentOffset+8])) - 1
 	// decode comment length
 	commentLength := binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+15 : c.Metadata.CurrentOffset+17])
-	c.Comments.CurrentOffset = c.Metadata.CurrentOffset + 17
 
 	// decode collation id for column type
 	var collationID int
@@ -107,6 +106,7 @@ func (c *Column) Decode() (err error) {
 	c.Comment, err = c.Comments.Decode(
 		uint32(commentLength), c.Collation.CharsetName)
 	if err != nil {
+		fmt.Printf("c.Name: %s\n", c.Name)
 		return err
 	}
 	return nil
