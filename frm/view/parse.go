@@ -1,7 +1,6 @@
 package view
 
 import (
-	"bytes"
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
@@ -11,8 +10,7 @@ import (
 	"time"
 )
 
-func Parse(path string, buf *bytes.Buffer) (view *MySQLView, err error) {
-	data := buf.String()
+func Parse(path string, data string) (view *MySQLView, err error) {
 	view = &MySQLView{}
 
 	lines := strings.Split(data, "\n")

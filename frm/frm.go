@@ -17,9 +17,9 @@ type MySQLSchema interface {
 func ParseBuffer(path string, buf *bytes.Buffer) (MySQLSchema, error) {
 	header := buf.Bytes()[:9]
 	if bytes.Equal(header[:2], []byte{0xfe, 0x01}) {
-		return table.Parse(path, buf)
+		return table.Parse(path, buf.Bytes())
 	} else if string(header) == "TYPE=VIEW" {
-		return view.Parse(path, buf)
+		return view.Parse(path, buf.String())
 	} else {
 		return nil, fmt.Errorf("invalid input format")
 	}
@@ -49,14 +49,14 @@ func Parse(path string, r io.Reader) (MySQLSchema, error) {
 		if err != nil {
 			return nil, err
 		}
-		return table.Parse(path, &buf)
+		return table.Parse(path, buf.Bytes())
 	} else if string(header) == "TYPE=VIEW" {
 		// Read the rest of the input and parse it as a MySQL view
 		_, err = io.Copy(&buf, r)
 		if err != nil {
 			return nil, err
 		}
-		return view.Parse(path, &buf)
+		return view.Parse(path, buf.String())
 	} else {
 		return nil, fmt.Errorf("invalid input format")
 	}

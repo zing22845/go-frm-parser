@@ -5,8 +5,7 @@ import (
 	"fmt"
 )
 
-func Parse(path string, buf *bytes.Buffer) (*MySQLTable, error) {
-	data := buf.Bytes()
+func Parse(path string, data []byte) (*MySQLTable, error) {
 	if len(data) < FILE_INFO_LENGTH {
 		return nil, fmt.Errorf("%s is not a binary .frm file, size at least %d", path, FILE_INFO_LENGTH)
 	}
