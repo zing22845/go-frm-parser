@@ -111,6 +111,9 @@ func ReadFileInfo(path string, data []byte) (fi *FileInfo, err error) {
 	if err != nil {
 		return nil, err
 	}
-	fi.MySQLTable = NewMySQLTable(path, data, fi)
+	fi.MySQLTable, err = NewMySQLTable(path, data, fi)
+	if err != nil {
+		return nil, err
+	}
 	return fi, nil
 }

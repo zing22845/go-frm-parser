@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/zing22845/go-frm-parser/frm/table/column"
+	"github.com/zing22845/go-frm-parser/frm/utils"
 )
 
 type MySQLTable struct {
@@ -21,11 +22,14 @@ type MySQLTable struct {
 	Options      *Options
 }
 
-func NewMySQLTable(path string, data []byte, fi *FileInfo) (mt *MySQLTable) {
+func NewMySQLTable(path string, data []byte, fi *FileInfo) (mt *MySQLTable, err error) {
 	mt = &MySQLTable{}
 	mt.FileInfo = fi
 	// parse table name from path
-	mt.ParseName(path)
+	err = mt.ParseName(path)
+	if err != nil {
+		return nil, err
+	}
 	mt.Collation = fi._26_CHARSET
 	mt.MySQLVersion = fi._33_MYSQL_VERSION
 	// get options
@@ -59,11 +63,13 @@ func NewMySQLTable(path string, data []byte, fi *FileInfo) (mt *MySQLTable) {
 		Comments:  commentsData,
 		Defaults:  mt.Defaults,
 	}
-	return mt
+	return mt, nil
 }
 
-func (mt *MySQLTable) ParseName(path string) {
+func (mt *MySQLTable) ParseName(path string) (err error) {
 	mt.Name = strings.TrimSuffix(filepath.Base(path), ".frm")
+	mt.Name, err = utils.DecodeMySQLFile2Object(mt.Name)
+	return err
 }
 
 func (mt *MySQLTable) String() string {
