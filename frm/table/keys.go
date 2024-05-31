@@ -63,6 +63,10 @@ func (ks *Keys) Decode(columns *Columns) {
 		}
 		ks.Items[i] = key
 		key.Decode()
+		keyStr := key.String()
+		if keyStr == "" {
+			continue
+		}
 		combined[i] = "  " + key.String()
 	}
 	ks.Combined = strings.Join(combined, ",\n")

@@ -34,17 +34,16 @@ func (k *Key) String() string {
 	components := make([]string, 0)
 	if k.Name == "PRIMARY" {
 		components = append(components, "PRIMARY KEY")
-	} else if k.IsUnique {
-		components = append(components, "UNIQUE KEY")
-	} else if k.IndexType == "FULLTEXT" {
-		components = append(components, "FULLTEXT KEY")
-	} else if k.IndexType == "SPATIAL" {
-		components = append(components, "SPATIAL KEY")
-	} else {
-		components = append(components, "KEY")
-	}
-
-	if k.Name != "" && k.Name != "PRIMARY" {
+	} else if k.Name != "" {
+		if k.IsUnique {
+			components = append(components, "UNIQUE KEY")
+		} else if k.IndexType == "FULLTEXT" {
+			components = append(components, "FULLTEXT KEY")
+		} else if k.IndexType == "SPATIAL" {
+			components = append(components, "SPATIAL KEY")
+		} else {
+			components = append(components, "KEY")
+		}
 		components = append(components, fmt.Sprintf("`%s`", k.Name))
 	}
 
@@ -52,8 +51,10 @@ func (k *Key) String() string {
 	for _, part := range k.Parts {
 		keyParts = append(keyParts, k.FormatKeyPart(part))
 	}
-	columns := fmt.Sprintf("(%s)", strings.Join(keyParts, ","))
-	components = append(components, columns)
+	if len(keyParts) != 0 {
+		columns := fmt.Sprintf("(%s)", strings.Join(keyParts, ","))
+		components = append(components, columns)
+	}
 
 	if k.Algorithm != HA_KEY_ALG_UNDEF {
 		components = append(components, fmt.Sprintf("USING %s", k.Algorithm.Name()))
