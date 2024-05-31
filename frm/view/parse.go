@@ -3,7 +3,6 @@ package view
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"io"
 	"regexp"
 	"strings"
@@ -58,11 +57,13 @@ func Parse(path string, data string) (view *MySQLView, err error) {
 
 	view.ParseName(path)
 	view.ComputedMD5 = computeMD5(view.Body)
-	if view.StoredMD5 != view.ComputedMD5 {
-		return view, fmt.Errorf(
-			"md5 not match, stored: %s, computed: %s",
-			view.StoredMD5, view.ComputedMD5)
-	}
+	/*
+		if view.StoredMD5 != view.ComputedMD5 {
+			return view, fmt.Errorf(
+				"md5 not match, stored: %s, computed: %s",
+				view.StoredMD5, view.ComputedMD5)
+		}
+	*/
 
 	return view, nil
 }

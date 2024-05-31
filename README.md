@@ -21,21 +21,22 @@ A database which has 229 tables takes 30s by using dbsake, but 1.29s by using go
 ## How to use it
 
 Just give the parser filepath and file reader of the frm file.
-```
-	path := os.Args[1]
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	defer file.Close()
 
-	// read and parse frm file
-	result, err := frm.Parse(path, file)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	fmt.Printf("====WITHOUT HEADER:\n%s", result.String())
-	fmt.Printf("\n====WITH HEADER:\n%s", result.StringWithHeader())
+```go
+ path := os.Args[1]
+ file, err := os.Open(path)
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
+ defer file.Close()
+
+ // read and parse frm file
+ result, err := frm.Parse(path, file)
+ if err != nil {
+  fmt.Println("Error:", err)
+  return
+ }
+ fmt.Printf("====WITHOUT HEADER:\n%s", result.String())
+ fmt.Printf("\n====WITH HEADER:\n%s", result.StringWithHeader())
 ```
