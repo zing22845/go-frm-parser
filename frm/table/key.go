@@ -56,7 +56,7 @@ func (k *Key) String() string {
 		components = append(components, columns)
 	}
 
-	if k.Algorithm != HA_KEY_ALG_UNDEF {
+	if k.Algorithm == HA_KEY_ALG_HASH || k.Algorithm == HA_KEY_ALG_BTREE {
 		components = append(components, fmt.Sprintf("USING %s", k.Algorithm.Name()))
 	}
 	if k.BlockSize > 0 {
