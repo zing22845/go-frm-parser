@@ -118,6 +118,7 @@ func (k *Key) Decode() {
 	} else {
 		k.IndexType = "BTREE"
 	}
+	k.IsUnique = (flags & HA_NOSAME) != 0
 }
 
 func (kp *KeyPart) String() string {
