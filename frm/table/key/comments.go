@@ -1,6 +1,8 @@
 package key
 
-import "encoding/binary"
+import (
+	"encoding/binary"
+)
 
 type Comments struct {
 	Data          []byte
@@ -18,6 +20,6 @@ func (c *Comments) Decode() (comment string) {
 	data := c.Data[c.CurrentOffset:]
 	length := binary.LittleEndian.Uint16(data)
 	comment = string(data[2 : 2+length])
-	c.CurrentOffset = 2 + uint32(length)
+	c.CurrentOffset += 2 + uint32(length)
 	return comment
 }
