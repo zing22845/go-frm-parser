@@ -761,12 +761,12 @@ func (c *Column) decodeTypeDatetime(hasDefault bool) error {
 	if scale > 0 {
 		c.TypeName += fmt.Sprintf("(%d)", scale)
 	}
+	if (c.TypeCode == MT_TIMESTAMP || c.TypeCode == MT_TIMESTAMP2) &&
+		c.Flags.HasFlag(FF_MAYBE_NULL) {
+		c.TypeName += " NULL"
+	}
 	if hasDefault {
 		return c.decodeDatetimeDefault(scale)
-	} else {
-		if c.TypeCode == MT_TIMESTAMP || c.TypeCode == MT_TIMESTAMP2 {
-			c.TypeName += " NULL"
-		}
 	}
 	return nil
 }

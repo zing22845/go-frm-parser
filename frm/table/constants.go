@@ -108,6 +108,7 @@ const (
 	FF_BITFIELD          FieldFlag = 512
 	FF_BLOB              FieldFlag = 1024
 	FF_GEOM              FieldFlag = 2048
+	FF_JSON              FieldFlag = 4096
 	FF_TREAT_BIT_AS_CHAR FieldFlag = 4096
 	FF_NO_DEFAULT        FieldFlag = 16384
 	FF_MAYBE_NULL        FieldFlag = 32768
