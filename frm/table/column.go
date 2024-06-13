@@ -106,7 +106,6 @@ func (c *Column) Decode() (err error) {
 	c.Comment, err = c.Comments.Decode(
 		uint32(commentLength), c.Collation.CharsetName)
 	if err != nil {
-		fmt.Printf("c.Name: %s\n", c.Name)
 		return err
 	}
 	return nil

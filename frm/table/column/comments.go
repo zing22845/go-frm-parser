@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/zing22845/go-frm-parser/frm/model"
-	"github.com/zing22845/go-frm-parser/frm/utils"
 )
 
 type Comments struct {
@@ -36,5 +35,5 @@ func (c *Comments) Decode(length uint32, charsetName string) (comment string, er
 	}
 	data := c.Data[c.CurrentOffset : c.CurrentOffset+length]
 	c.CurrentOffset += length
-	return utils.UTF8Decoder(data, charsetName)
+	return string(data), nil
 }
