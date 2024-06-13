@@ -177,7 +177,8 @@ const (
 	MT_TIMESTAMP2
 	MT_DATETIME2
 	MT_TIME2
-	MT_NEWDECIMAL = iota + 226
+	MT_JSON = iota + 225
+	MT_NEWDECIMAL
 	MT_ENUM
 	MT_SET
 	MT_TINY_BLOB
@@ -221,6 +222,7 @@ var MySQLTypeMap = map[MySQLType]struct {
 	MT_TIMESTAMP2:  {"timestamp", KP_NONE},
 	MT_DATETIME2:   {"datetime", KP_NONE},
 	MT_TIME2:       {"time", KP_NONE},
+	MT_JSON:        {"json", KP_NONE},
 	MT_NEWDECIMAL:  {"decimal", KP_NONE},
 	MT_ENUM:        {"enum", KP_NONE},
 	MT_SET:         {"set", KP_NONE},

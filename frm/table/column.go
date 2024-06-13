@@ -144,6 +144,11 @@ func (c *Column) DecodeTypes() (err error) {
 		if err != nil {
 			return err
 		}
+	case MT_JSON:
+		err = c.decodeTypeJson(hasDefault)
+		if err != nil {
+			return err
+		}
 	case MT_BIT:
 		c.decodeTypeBit(hasDefault)
 	case MT_TIME, MT_TIME2:
@@ -565,6 +570,14 @@ func (c *Column) decodeSetDefault() error {
 	return nil
 }
 
+func (c *Column) decodeTypeJson(hasDefault bool) error {
+	if hasDefault {
+		return fmt.Errorf("not implemented default for json type")
+	}
+	c.Default = "NULL"
+	return nil
+}
+
 func (c *Column) decodeTypeBlob(hasDefault bool) error {
 	if c.Collation.CharsetName == charset.CharsetBin {
 		c.TypeName += "blob"
@@ -750,6 +763,10 @@ func (c *Column) decodeTypeDatetime(hasDefault bool) error {
 	}
 	if hasDefault {
 		return c.decodeDatetimeDefault(scale)
+	} else {
+		if c.TypeCode == MT_TIMESTAMP || c.TypeCode == MT_TIMESTAMP2 {
+			c.TypeName += " NULL"
+		}
 	}
 	return nil
 }
