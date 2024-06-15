@@ -19,6 +19,10 @@ type MySQLView struct {
 	Timestamp   time.Time
 }
 
+func (v *MySQLView) GetName() string {
+	return v.Name
+}
+
 func (v *MySQLView) ParseName(path string) {
 	v.Name = strings.TrimSuffix(filepath.Base(path), ".frm")
 }

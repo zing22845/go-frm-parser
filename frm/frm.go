@@ -12,6 +12,7 @@ import (
 type MySQLSchema interface {
 	String() string
 	StringWithHeader() string
+	GetName() string
 }
 
 func ParseBuffer(path string, buf *bytes.Buffer) (MySQLSchema, error) {

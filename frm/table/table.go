@@ -66,6 +66,10 @@ func NewMySQLTable(path string, data []byte, fi *FileInfo) (mt *MySQLTable, err 
 	return mt, nil
 }
 
+func (mt *MySQLTable) GetName() string {
+	return mt.Name
+}
+
 func (mt *MySQLTable) ParseName(path string) (err error) {
 	mt.Name = strings.TrimSuffix(filepath.Base(path), ".frm")
 	mt.Name, err = utils.DecodeMySQLFile2Object(mt.Name)
