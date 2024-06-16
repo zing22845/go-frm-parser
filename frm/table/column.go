@@ -53,9 +53,9 @@ func (c *Column) String() string {
 }
 
 func (c *Column) Decode() (err error) {
-	c.Length = binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+3 : c.Metadata.CurrentOffset+5])
+	c.Length = binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+3:])
 	// decode flags
-	c.Flags = FieldFlag(binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+8 : c.Metadata.CurrentOffset+10]))
+	c.Flags = FieldFlag(binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+8:]))
 	// decode unireg_check
 	c.Utype = Utype(c.Metadata.Data[c.Metadata.CurrentOffset+10])
 	// deocde type code
@@ -68,9 +68,9 @@ func (c *Column) Decode() (err error) {
 			labelBytes = c.Labels.Items[labelID]
 		}
 	}
-	c.Defaults.CurrentOffset = uint32(utils.Uint24LE(c.Metadata.Data[c.Metadata.CurrentOffset+5:c.Metadata.CurrentOffset+8])) - 1
+	c.Defaults.CurrentOffset = uint32(utils.Uint24LE(c.Metadata.Data[c.Metadata.CurrentOffset+5:])) - 1
 	// decode comment length
-	commentLength := binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+15 : c.Metadata.CurrentOffset+17])
+	commentLength := binary.LittleEndian.Uint16(c.Metadata.Data[c.Metadata.CurrentOffset+15:])
 
 	// decode collation id for column type
 	var collationID int
@@ -204,6 +204,7 @@ func (c *Column) hasDefaults() bool {
 }
 
 func (c *Column) decodeTypeDecimal(hasDefaults bool) {
+	isSigned := c.Flags.HasFlag(FF_DECIMAL)
 	precision := c.Length
 	if c.Scale != 0 {
 		precision -= 1
@@ -211,10 +212,15 @@ func (c *Column) decodeTypeDecimal(hasDefaults bool) {
 	if precision != 0 {
 		precision -= 1
 	}
+	if precision == 0 {
+		precision = 1
+	}
 	c.TypeName += fmt.Sprintf("(%d,%d)", precision, c.Scale)
+	if !isSigned {
+		c.TypeName += " unsigned"
+	}
 	if hasDefaults {
 		c.decodeDecimalDefault(precision)
-
 	}
 }
 
@@ -823,7 +829,7 @@ func (c *Column) decodeDatetime2Default(scale int32) {
 	hour := hms >> 12
 
 	// Format the datetime string
-	value := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second)
+	value := fmt.Sprintf("%04d-%02d-%02d %02d:%02d:%02d", year, month, day, hour, minute, second)
 
 	if scale > 0 {
 		nBytes := utils.DigitsToBytes[scale]

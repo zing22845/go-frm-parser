@@ -22,6 +22,11 @@ const (
 
 	// MAX_DATETIME_WIDTH is the maximum width of a datetime
 	MAX_DATETIME_WIDTH = 19
+
+	// DECIAML
+	DECIMAL_BUFF_LENGTH            = 9
+	DECIMAL_MAX_POSSIBLE_PRECISION = DECIMAL_BUFF_LENGTH * 9
+	DECIMAL_MAX_PRECISION          = DECIMAL_MAX_POSSIBLE_PRECISION - 8*2
 )
 
 // LegacyDBType represents the legacy database types
