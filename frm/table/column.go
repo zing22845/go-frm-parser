@@ -93,7 +93,7 @@ func (c *Column) Decode() (err error) {
 		for i, lb := range labelBytes {
 			c.LabelStrs[i], err = utils.UTF8Decoder(lb, c.Collation.CharsetName)
 			if err != nil {
-				return err
+				c.LabelStrs[i] = string(lb)
 			}
 		}
 	}
@@ -492,7 +492,7 @@ func (c *Column) decodeCharsDefault() (err error) {
 	} else {
 		c.Default, err = utils.UTF8Decoder(data, c.Collation.CharsetName)
 		if err != nil {
-			return err
+			c.Default = string(data)
 		}
 	}
 	c.Default = fmt.Sprintf("'%s'", strings.TrimRight(c.Default, " "))
