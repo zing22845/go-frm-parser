@@ -15,7 +15,7 @@ type Columns struct {
 	Comments   *column.Comments
 	Defaults   *Defaults
 	NullBitMap []byte
-	NullBit    int
+	NullBit    *int
 	Items      []*Column
 	Combined   string
 }
@@ -26,9 +26,9 @@ func (cs *Columns) Decode(table *MySQLTable) error {
 
 	cs.NullBitMap = table.Defaults.Data[:(cs.NullCount+1+7)/8]
 	table.Defaults.CurrentOffset += uint32((cs.NullCount + 1 + 7) / 8)
-	cs.NullBit = 0
+	cs.NullBit = new(int)
 	if !table.Options.HandlerOptions.HasOption(HO_PACK_RECORD) {
-		cs.NullBit = 1
+		*cs.NullBit = 1
 	}
 
 	cs.Items = make([]*Column, cs.Count)

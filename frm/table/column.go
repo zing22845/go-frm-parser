@@ -30,7 +30,7 @@ type Column struct {
 	Flags          FieldFlag
 	Utype          Utype
 	NullBitMap     []byte
-	NullBit        int
+	NullBit        *int
 	Metadata       *column.Metadata
 	Defaults       *Defaults
 	Labels         *column.Labels
@@ -190,10 +190,10 @@ func (c *Column) hasDefaults() bool {
 		return false
 	}
 	if c.Flags.HasFlag(FF_MAYBE_NULL) {
-		offset := c.NullBit / 8
+		offset := *c.NullBit / 8
 		nullByte := c.NullBitMap[offset]
-		nullBit := c.NullBit % 8
-		c.NullBit++
+		nullBit := *c.NullBit % 8
+		*c.NullBit++
 		if nullByte&(1<<(nullBit)) != 0 && c.Utype != UT_BLOB_FIELD {
 			c.Default = "NULL"
 			return false
