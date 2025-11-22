@@ -28,6 +28,8 @@ go get github.com/zing22845/go-frm-parser
 
 ## Usage
 
+### Parse from file
+
 Here's a basic example of how to use go-frm-parser:
 
 ```go
@@ -56,6 +58,41 @@ func main() {
     }
     fmt.Printf("====WITHOUT HEADER:\n%s", result.String())
     fmt.Printf("\n====WITH HEADER:\n%s", result.StringWithHeader())
+}
+```
+
+### Parsing from Buffer
+
+You can also parse `.frm` data directly from a byte slice (e.g., read from a network stream or memory):
+
+```go
+package main
+
+import (
+    "bytes"
+    "fmt"
+    "os"
+    frm "github.com/zing22845/go-frm-parser/frm"
+)
+
+func main() {
+    path := os.Args[1]
+    // Simulate reading data into a buffer
+    data, err := os.ReadFile(path)
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    
+    buf := bytes.NewBuffer(data)
+
+    // Parse from buffer
+    result, err := frm.ParseBuffer(path, buf)
+    if err != nil {
+        fmt.Println("Error:", err)
+        return
+    }
+    fmt.Printf("====WITHOUT HEADER:\n%s", result.String())
 }
 ```
 
