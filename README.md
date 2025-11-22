@@ -112,6 +112,10 @@ go-frm-parser provides several advantages over the `frmdump` functionality in db
 
 While dbsake's `frmdump` is a useful tool, go-frm-parser provides a more comprehensive, performant, and flexible solution for parsing MySQL `.frm` files and data.
 
+## Used By
+
+This project is used in [go-xbstream](https://github.com/zing22845/go-xbstream/blob/master/pkg/index/table_schema.go) for streaming parsing of table structure information in MySQL xtrabackup backup data streams.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
