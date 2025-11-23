@@ -1,2 +1,4 @@
 cmd/cmd
 cmd/go-frm-parser
+
+.DS_Store
